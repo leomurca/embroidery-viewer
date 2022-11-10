@@ -9,6 +9,7 @@ function onSubmitHandler(evt) {
   evt.stopPropagation();
   evt.preventDefault();
 
+
   for (var i = 0, file; (file = files[i]); i++) {
     const canvasContainer = document.getElementById("canvas-container")
     const canvasCard = document.createElement(`div`)
@@ -39,6 +40,7 @@ function onSubmitHandler(evt) {
       startFileRead(file, canvasEl);
     }
   }
+  document.getElementById("selected-files-container").remove();
 }
 
 function handleDragOver(evt) {
@@ -88,10 +90,21 @@ function handleOnKeydown(evt) {
 
   <div id="dropzone" on:keydown={handleOnKeydown} on:click={handleOnClick} on:dragover={handleDragOver} on:drop={onDropHandler}>
     <label id="file-label" for="file-input">Drag and drop files here or click to upload.</label>
-    <input id="file-input" type="file" name="files[]" accept={acceptedFiles.join(",")} multiple on:change={onChangeFileHandler} />
+    <input id="file-input" type="file" name="files[]" accept={acceptedFiles.join(",")} multiple on:change={onChangeFileHandler} bind:files />
   </div>
   <input type="submit" value="Render files">
 </form>
+
+<div id="selected-files-container">
+{#if files}
+	<h2>Selected files:</h2>
+	{#each Array.from(files) as file}
+    <div id="selected-file-card">
+		  <p>{file.name} ({file.size/1000} kb) </p>
+    </div>
+	{/each}
+{/if}
+</div>
 
 <div id="canvas-container" style="width: 100%; heigth: 100vh;"></div>
 
@@ -99,8 +112,12 @@ function handleOnKeydown(evt) {
 
   input[type="submit"] {
     width: 100%;
-    font-size: 30px;
+    font-size: 20px;
     margin-top: 20px;
+    background-color: #05345f;
+    font-weight: 700;
+    color: white;
+    padding: 10px;
   }
 
   input[type="submit"]:hover {
@@ -127,17 +144,25 @@ function handleOnKeydown(evt) {
     display: none;
   }
 
+  #selected-file-card {
+    border: 1px solid #000;
+    width: 500px;
+    padding-left: 15px;
+    margin-top: 10px;
+  }
+
   #canvas-container {
     display: flex;
     width: 100%; 
     justify-content: space-evenly;
     flex-wrap: wrap;
+    margin-top: 50px;
   }
 
   #dropzone:hover {
     cursor: pointer;
-    border: 5px dotted #7FB77E;
-    color: #7FB77E;
+    border: 5px dotted #05345f;
+    color: #05345f;
   }
 
 </style>

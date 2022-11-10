@@ -1,15 +1,23 @@
 <script>
   import Counter from './lib/Counter.svelte'
+  import logo from './assets/logo.webp'
 </script>
 
 <header>
-  <h1>Embroidery Viewer</h1>
+  <a href="/">
+  <img
+    src={logo}
+    alt="Embroidery viewer logo."
+    width=460
+    height=200
+  />
+  </a>
 </header>
 <main>
   <Counter />
 </main>
 <footer>
-  <p>Copyright © 2022 Leonardo Murça.</p>
+  <p>Copyright © 2022 <a href="https://leomurca.xyz" target="_blank" rel="noreferrer" >Leonardo Murça</a>.</p>
 </footer>
 
 <style>
@@ -18,5 +26,6 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    box-sizing: border-box;
   }
 </style>
