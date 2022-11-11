@@ -2,48 +2,24 @@
   import { startFileRead } from "../utils/main";
 
   let files;
+  let filesRendered = false;
+  let filesRefs = [];
   const acceptedFiles = [".pes"];
   const maxFileSize = 700000;
 
-  function onSubmitHandler() {
-    for (var i = 0, file; (file = files[i]); i++) {
-      const canvasContainer = document.getElementById("canvas-container");
-      const canvasCard = document.createElement(`div`);
-      const canvasEl = document.createElement(`canvas`);
-      const fileNameEl = document.createElement(`p`);
-
-      canvasCard.id = `canvas-card-${i}`;
-      canvasCard.style["display"] = "flex";
-      canvasCard.style["flex-direction"] = "column";
-      canvasCard.style["justify-content"] = "center";
-      canvasCard.style["align-items"] = "center";
-      canvasCard.style["width"] = "550px";
-      canvasCard.style["height"] = "550px";
-      canvasCard.style["margin-bottom"] = "15px";
-      canvasCard.style["border"] = "2px solid black";
-
-      canvasEl.id = `mycanvas-${i}`;
-      canvasEl.style["height"] = "80%";
-      canvasEl.style["width"] = "fit-content";
-
-      fileNameEl.textContent = file.name;
-
-      canvasCard.appendChild(canvasEl);
-      canvasCard.appendChild(fileNameEl);
-      canvasContainer.appendChild(canvasCard);
-
-      if (file) {
-        startFileRead(file, canvasEl);
-      }
-    }
-    document.getElementById("selected-files-container").remove();
+  function onSubmit() {
+    filesRendered = true;
   }
 
-  function onDropHandler(evt) {
-    onChangeFileHandler(evt);
+  function onDrop(evt) {
+    onChange(evt);
   }
 
-  function onChangeFileHandler(evt) {
+  function onChange(evt) {
+    files = null;
+    filesRefs = [];
+    filesRendered = false;
+
     const changedFiles = evt.dataTransfer
       ? evt.dataTransfer.files
       : evt.target.files;
@@ -61,11 +37,11 @@
     files = filesToUpload;
   }
 
-  function handleOnClick() {
+  function onClick() {
     document.getElementById("file-input").click();
   }
 
-  function handleOnKeydown(evt) {
+  function onKeydown(evt) {
     if (evt.key === "Enter") {
       document.getElementById("file-input").click();
     }
@@ -73,7 +49,7 @@
 </script>
 
 <form
-  on:submit|preventDefault|stopPropagation={onSubmitHandler}
+  on:submit|preventDefault|stopPropagation={onSubmit}
   id="form"
   enctype="multipart/form-data"
 >
@@ -87,10 +63,10 @@
   <div
     id="dropzone"
     tabindex={0}
-    on:keydown={handleOnKeydown}
-    on:click={handleOnClick}
+    on:keydown={onKeydown}
+    on:click={onClick}
     on:dragover|preventDefault|stopPropagation
-    on:drop|preventDefault|stopPropagation={onDropHandler}
+    on:drop|preventDefault|stopPropagation={onDrop}
   >
     <label id="file-label" for="file-input"
       >Drag and drop files here or click to upload.</label
@@ -101,25 +77,40 @@
       name="files[]"
       accept={acceptedFiles.join(",")}
       multiple
-      on:change={onChangeFileHandler}
+      on:change={onChange}
       bind:files
     />
   </div>
   <input type="submit" value="Render files" />
 </form>
 
-<div id="selected-files-container">
-  {#if files}
+{#if files && files.length !== 0 && !filesRendered}
+  <div id="selected-files-container">
     <h2>Selected files:</h2>
     {#each Array.from(files) as file}
       <div id="selected-file-card">
         <p>{file.name} ({file.size / 1000} kb)</p>
       </div>
     {/each}
-  {/if}
-</div>
+  </div>
+{/if}
 
-<div id="canvas-container" style="width: 100%; heigth: 100vh;" />
+{#if files && files.length !== 0 && filesRendered}
+  <div id="canvas-container" style="width: 100%; heigth: 100vh;">
+    {#each Array.from(files) as file, i}
+      <div
+        style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 550px; height: 550px; margin-bottom: 15px; border: 2px solid black;"
+      >
+        <canvas
+          bind:this={filesRefs[i]}
+          style="height: 80%; width: fit-content;"
+        />
+        <p>{file.name}</p>
+      </div>
+      {filesRefs[i] && startFileRead(file, filesRefs[i])}
+    {/each}
+  </div>
+{/if}
 
 <style>
   input[type="submit"] {

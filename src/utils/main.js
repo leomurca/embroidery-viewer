@@ -61,4 +61,6 @@ export function startFileRead(fileObject, canvas) {
   if (fileObject) {
     reader.readAsArrayBuffer(fileObject);
   }
+
+  return "";
 }
