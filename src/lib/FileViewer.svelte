@@ -98,13 +98,8 @@
 {#if files && files.length !== 0 && filesRendered}
   <div id="canvas-container" style="width: 100%; heigth: 100vh;">
     {#each Array.from(files) as file, i}
-      <div
-        style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 550px; height: 550px; margin-bottom: 15px; border: 2px solid black;"
-      >
-        <canvas
-          bind:this={filesRefs[i]}
-          style="height: 80%; width: fit-content;"
-        />
+      <div class="card-canvas">
+        <canvas bind:this={filesRefs[i]} class="canvas" />
         <p>{file.name}</p>
       </div>
       {filesRefs[i] && startFileRead(file, filesRefs[i])}
@@ -113,6 +108,20 @@
 {/if}
 
 <style>
+  .canvas {
+    height: 80%;
+    width: fit-content;
+  }
+  .card-canvas {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 550px;
+    height: 550px;
+    margin-bottom: 15px;
+    border: 2px solid black;
+  }
   input[type="submit"] {
     width: 100%;
     font-size: 20px;
@@ -121,6 +130,8 @@
     font-weight: 700;
     color: white;
     padding: 10px;
+    -webkit-appearance: none;
+    border-radius: 0;
   }
 
   input[type="submit"]:hover {
@@ -166,5 +177,32 @@
     cursor: pointer;
     border: 5px dotted #05345f;
     color: #05345f;
+  }
+
+  @media only screen and (max-device-width: 812px) {
+    #form {
+      width: 100%;
+    }
+
+    #dropzone {
+      width: 100%;
+    }
+
+    #selected-files-container {
+      width: 100%;
+    }
+
+    #selected-file-card {
+      width: 100%;
+    }
+
+    #canvas-container {
+      width: 100%;
+    }
+
+    .card-canvas {
+      width: 100%;
+      height: 400px;
+    }
   }
 </style>
