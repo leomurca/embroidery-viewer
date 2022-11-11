@@ -5,10 +5,7 @@
   const acceptedFiles = [".pes"];
   const maxFileSize = 700000;
 
-  function onSubmitHandler(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-
+  function onSubmitHandler() {
     for (var i = 0, file; (file = files[i]); i++) {
       const canvasContainer = document.getElementById("canvas-container");
       const canvasCard = document.createElement(`div`);
@@ -42,14 +39,7 @@
     document.getElementById("selected-files-container").remove();
   }
 
-  function handleDragOver(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-  }
-
   function onDropHandler(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
     onChangeFileHandler(evt);
   }
 
@@ -71,7 +61,7 @@
     files = filesToUpload;
   }
 
-  function handleOnClick(evt) {
+  function handleOnClick() {
     document.getElementById("file-input").click();
   }
 
@@ -82,7 +72,11 @@
   }
 </script>
 
-<form on:submit={onSubmitHandler} id="form" enctype="multipart/form-data">
+<form
+  on:submit|preventDefault|stopPropagation={onSubmitHandler}
+  id="form"
+  enctype="multipart/form-data"
+>
   <h2>Upload files</h2>
   <p>
     Max file size is <strong>{maxFileSize / 1000}kb</strong>. Accepted formats:
@@ -95,8 +89,8 @@
     tabindex={0}
     on:keydown={handleOnKeydown}
     on:click={handleOnClick}
-    on:dragover={handleDragOver}
-    on:drop={onDropHandler}
+    on:dragover|preventDefault|stopPropagation
+    on:drop|preventDefault|stopPropagation={onDropHandler}
   >
     <label id="file-label" for="file-input"
       >Drag and drop files here or click to upload.</label
