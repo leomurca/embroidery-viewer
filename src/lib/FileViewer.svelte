@@ -1,5 +1,5 @@
 <script>
-import { startFileRead } from './main';
+import { startFileRead } from '../utils/main';
 
 let files;
 const acceptedFiles = [".pes"];
@@ -8,7 +8,6 @@ const maxFileSize = 700000;
 function onSubmitHandler(evt) {
   evt.stopPropagation();
   evt.preventDefault();
-
 
   for (var i = 0, file; (file = files[i]); i++) {
     const canvasContainer = document.getElementById("canvas-container")

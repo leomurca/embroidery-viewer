@@ -1,6 +1,6 @@
-import { jDataView } from "./jdataview";
-import { pesRead } from "./pesformat";
-import { Pattern } from "./pattern";
+import { jDataView } from "../utils/jdataview";
+import { pesRead } from "../utils/pesformat";
+import { Pattern } from "../utils/pattern";
 
 String.prototype.endsWith = function (suffix) {
   return this.indexOf(suffix, this.length - suffix.length) !== -1;

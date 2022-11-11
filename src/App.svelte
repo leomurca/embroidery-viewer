@@ -1,5 +1,5 @@
 <script>
-  import Counter from './lib/Counter.svelte'
+  import FileViewer from './lib/FileViewer.svelte'
   import logo from './assets/logo.webp'
 </script>
 
@@ -14,7 +14,7 @@
   </a>
 </header>
 <main>
-  <Counter />
+  <FileViewer />
 </main>
 <footer>
   <p>Copyright © 2022 <a href="https://leomurca.xyz" target="_blank" rel="noreferrer" >Leonardo Murça</a>.</p>
