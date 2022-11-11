@@ -76,7 +76,9 @@ function handleOnClick(evt) {
 }
 
 function handleOnKeydown(evt) {
-  console.log(evt)
+  if (evt.key === "Enter") {
+    document.getElementById("file-input").click();
+  }
 }
 </script>
 
@@ -88,7 +90,8 @@ function handleOnKeydown(evt) {
   <h2>Upload files</h2>
   <p>Max file size is <strong>{maxFileSize/1000}kb</strong>. Accepted formats: <strong>{acceptedFiles.join(",")}</strong>.</p>
 
-  <div id="dropzone" on:keydown={handleOnKeydown} on:click={handleOnClick} on:dragover={handleDragOver} on:drop={onDropHandler}>
+  <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+  <div id="dropzone" tabindex={0} on:keydown={handleOnKeydown} on:click={handleOnClick} on:dragover={handleDragOver} on:drop={onDropHandler}>
     <label id="file-label" for="file-input">Drag and drop files here or click to upload.</label>
     <input id="file-input" type="file" name="files[]" accept={acceptedFiles.join(",")} multiple on:change={onChangeFileHandler} bind:files />
   </div>
