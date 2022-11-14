@@ -110,7 +110,8 @@
 <style>
   .canvas {
     height: 80%;
-    width: fit-content;
+    width: 100%;
+    object-fit: contain;
   }
   .card-canvas {
     display: flex;
@@ -120,6 +121,7 @@
     width: 550px;
     height: 550px;
     margin-bottom: 15px;
+    padding: 10px;
     border: 2px solid black;
   }
   input[type="submit"] {
