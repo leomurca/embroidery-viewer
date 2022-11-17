@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postbuild": "npx svelte-sitemap --domain https://embroideryviewer.xyz -o dist"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.1.0",
