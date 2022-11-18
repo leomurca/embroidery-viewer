@@ -1,20 +1,21 @@
+const formattedFilenameExt = (name) =>
+  `.${name.split(".").pop().toLowerCase()}`;
+
+const areRequirementsFulfilled = (requirements, file) =>
+  requirements.maxSize >= file.size &&
+  requirements.supportedFormats.includes(formattedFilenameExt(file.name));
+
 export function filterFileRequirements(files, requirements) {
   let accepted = [];
   let rejected = [];
-  for (var i = 0, file; (file = files[i]); i++) {
+  Array.from(files).forEach((file) => {
     if (file) {
-      if (
-        requirements.maxSize >= file.size &&
-        requirements.supportedFormats.includes(
-          `.${file.name.split(".").pop().toLowerCase()}`
-        )
-      ) {
+      if (areRequirementsFulfilled(requirements, file)) {
         accepted.push(file);
       } else {
         rejected.push(file);
       }
     }
-  }
-
+  });
   return { accepted, rejected };
 }
