@@ -30,3 +30,21 @@ body {
   background-color: #F2F6F5;
   z-index: 10;
 }
+
+input[type="submit"] {
+  width: 100%;
+  font-size: 20px;
+  margin-top: 20px;
+  background-color: #05345f;
+  font-weight: 700;
+  color: white;
+  padding: 10px;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+input[type="submit"]:hover {
+  cursor: pointer;
+  background-color: black;
+  color: white;
+}

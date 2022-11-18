@@ -1,5 +1,5 @@
 <script>
-  import CanvasCard from "./CanvasCard.svelte";
+  import CardList from "./CardList.svelte";
 
   let files;
   let filesRendered = false;
@@ -94,30 +94,10 @@
 {/if}
 
 {#if files && files.length !== 0 && filesRendered}
-  <div id="canvas-container" style="width: 100%; heigth: 100vh;">
-    <CanvasCard {files} />
-  </div>
+  <CardList {files} />
 {/if}
 
 <style>
-  input[type="submit"] {
-    width: 100%;
-    font-size: 20px;
-    margin-top: 20px;
-    background-color: #05345f;
-    font-weight: 700;
-    color: white;
-    padding: 10px;
-    -webkit-appearance: none;
-    border-radius: 0;
-  }
-
-  input[type="submit"]:hover {
-    cursor: pointer;
-    background-color: black;
-    color: white;
-  }
-
   #dropzone {
     display: flex;
     height: 100px;
@@ -143,14 +123,6 @@
     margin-top: 10px;
   }
 
-  #canvas-container {
-    display: flex;
-    width: 100%;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    margin-top: 50px;
-  }
-
   #dropzone:hover {
     cursor: pointer;
     border: 5px dotted #05345f;
@@ -171,10 +143,6 @@
     }
 
     #selected-file-card {
-      width: 100%;
-    }
-
-    #canvas-container {
       width: 100%;
     }
   }

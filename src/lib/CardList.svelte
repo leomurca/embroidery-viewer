@@ -5,16 +5,26 @@
   let canvasRefs = [];
 </script>
 
-{#each Array.from(files) as file, i}
-  <div class="container">
-    <canvas bind:this={canvasRefs[i]} class="canvas" />
-    <p>{file.name}</p>
-  </div>
-  {canvasRefs[i] && startFileRead(file, canvasRefs[i])}
-{/each}
+<div id="container" style="width: 100%; heigth: 100vh;">
+  {#each Array.from(files) as file, i}
+    <div class="canvas-container">
+      <canvas bind:this={canvasRefs[i]} class="canvas" />
+      <p>{file.name}</p>
+    </div>
+    {canvasRefs[i] && startFileRead(file, canvasRefs[i])}
+  {/each}
+</div>
 
 <style>
-  .container {
+  #container {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin-top: 50px;
+  }
+
+  .canvas-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -33,9 +43,13 @@
   }
 
   @media only screen and (max-device-width: 812px) {
-    .container {
+    .canvas-container {
       width: 100%;
       height: 400px;
+    }
+
+    #container {
+      width: 100%;
     }
   }
 </style>
