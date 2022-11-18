@@ -5,16 +5,16 @@
 
   import { filterFileRequirements } from "../utils/filterFileRequirements";
 
-  let files;
-  let filesRendered = false;
-  let filesRejected;
+  let acceptedFiles;
+  let rejectedFiles;
+  let isAcceptedFilesRendered = false;
   const fileRequirements = {
     supportedFormats: [".pes"],
     maxSize: 700000,
   };
 
   const onSubmit = () => {
-    filesRendered = true;
+    isAcceptedFilesRendered = true;
   };
 
   const onDrop = (evt) => {
@@ -22,16 +22,16 @@
   };
 
   const onChange = (evt) => {
-    files = null;
-    filesRendered = false;
+    acceptedFiles = null;
+    isAcceptedFilesRendered = false;
 
     const changedFiles = evt.dataTransfer
       ? evt.dataTransfer.files
       : evt.target.files;
 
     const results = filterFileRequirements(changedFiles, fileRequirements);
-    files = results.accepted;
-    filesRejected = results.rejected;
+    acceptedFiles = results.accepted;
+    rejectedFiles = results.rejected;
   };
 
   const onClick = () => {
@@ -58,7 +58,7 @@
   </p>
 
   <Dropzone
-    {files}
+    files={acceptedFiles}
     supportedFormats={fileRequirements.supportedFormats}
     {onKeydown}
     {onClick}
@@ -69,11 +69,11 @@
   <input type="submit" value="Render files" />
 </form>
 
-{#if filesRendered}
-  <CardList {files} />
+{#if isAcceptedFilesRendered}
+  <CardList files={acceptedFiles} />
 {:else}
-  <FileList title="Rejected Files" files={filesRejected} isError />
-  <FileList title="Selected Files" {files} />
+  <FileList title="Rejected Files" files={rejectedFiles} isError />
+  <FileList title="Selected Files" files={rejectedFiles} />
 {/if}
 
 <style>
