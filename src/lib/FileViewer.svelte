@@ -1,5 +1,6 @@
 <script>
   import CardList from "./CardList.svelte";
+  import FileList from "./FileList.svelte";
 
   let files;
   let filesRendered = false;
@@ -82,19 +83,10 @@
   <input type="submit" value="Render files" />
 </form>
 
-{#if files && files.length !== 0 && !filesRendered}
-  <div id="selected-files-container">
-    <h2>Selected files:</h2>
-    {#each Array.from(files) as file}
-      <div id="selected-file-card">
-        <p>{file.name} ({file.size / 1000} kb)</p>
-      </div>
-    {/each}
-  </div>
-{/if}
-
-{#if files && files.length !== 0 && filesRendered}
+{#if filesRendered}
   <CardList {files} />
+{:else}
+  <FileList {files} />
 {/if}
 
 <style>
@@ -116,13 +108,6 @@
     display: none;
   }
 
-  #selected-file-card {
-    border: 1px solid #000;
-    width: 500px;
-    padding-left: 15px;
-    margin-top: 10px;
-  }
-
   #dropzone:hover {
     cursor: pointer;
     border: 5px dotted #05345f;
@@ -135,14 +120,6 @@
     }
 
     #dropzone {
-      width: 100%;
-    }
-
-    #selected-files-container {
-      width: 100%;
-    }
-
-    #selected-file-card {
       width: 100%;
     }
   }

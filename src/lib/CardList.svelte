@@ -5,15 +5,17 @@
   let canvasRefs = [];
 </script>
 
-<div id="container" style="width: 100%; heigth: 100vh;">
-  {#each Array.from(files) as file, i}
-    <div class="canvas-container">
-      <canvas bind:this={canvasRefs[i]} class="canvas" />
-      <p>{file.name}</p>
-    </div>
-    {canvasRefs[i] && startFileRead(file, canvasRefs[i])}
-  {/each}
-</div>
+{#if files.length !== 0}
+  <div id="container" style="width: 100%; heigth: 100vh;">
+    {#each Array.from(files) as file, i}
+      <div class="canvas-container">
+        <canvas bind:this={canvasRefs[i]} class="canvas" />
+        <p>{file.name}</p>
+      </div>
+      {canvasRefs[i] && startFileRead(file, canvasRefs[i])}
+    {/each}
+  </div>
+{/if}
 
 <style>
   #container {
