@@ -1,9 +1,8 @@
 <script>
-  import { startFileRead } from "../utils/main";
+  import CanvasCard from "./CanvasCard.svelte";
 
   let files;
   let filesRendered = false;
-  let filesRefs = [];
   const acceptedFiles = [".pes"];
   const maxFileSize = 700000;
 
@@ -17,7 +16,6 @@
 
   const onChange = (evt) => {
     files = null;
-    filesRefs = [];
     filesRendered = false;
 
     const changedFiles = evt.dataTransfer
@@ -97,33 +95,11 @@
 
 {#if files && files.length !== 0 && filesRendered}
   <div id="canvas-container" style="width: 100%; heigth: 100vh;">
-    {#each Array.from(files) as file, i}
-      <div class="card-canvas">
-        <canvas bind:this={filesRefs[i]} class="canvas" />
-        <p>{file.name}</p>
-      </div>
-      {filesRefs[i] && startFileRead(file, filesRefs[i])}
-    {/each}
+    <CanvasCard {files} />
   </div>
 {/if}
 
 <style>
-  .canvas {
-    height: 80%;
-    width: 100%;
-    object-fit: contain;
-  }
-  .card-canvas {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 550px;
-    height: 550px;
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 2px solid black;
-  }
   input[type="submit"] {
     width: 100%;
     font-size: 20px;
@@ -200,11 +176,6 @@
 
     #canvas-container {
       width: 100%;
-    }
-
-    .card-canvas {
-      width: 100%;
-      height: 400px;
     }
   }
 </style>
