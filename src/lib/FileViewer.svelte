@@ -73,7 +73,7 @@
   <CardList files={acceptedFiles} />
 {:else}
   <FileList title="Rejected Files" files={rejectedFiles} isError />
-  <FileList title="Selected Files" files={rejectedFiles} />
+  <FileList title="Selected Files" files={acceptedFiles} />
 {/if}
 
 <style>
