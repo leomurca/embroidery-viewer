@@ -7,15 +7,15 @@
   const acceptedFiles = [".pes"];
   const maxFileSize = 700000;
 
-  function onSubmit() {
+  const onSubmit = () => {
     filesRendered = true;
-  }
+  };
 
-  function onDrop(evt) {
+  const onDrop = (evt) => {
     onChange(evt);
-  }
+  };
 
-  function onChange(evt) {
+  const onChange = (evt) => {
     files = null;
     filesRefs = [];
     filesRendered = false;
@@ -35,23 +35,23 @@
       }
     }
     files = filesToUpload;
-  }
+  };
 
-  function onClick() {
+  const onClick = () => {
     document.getElementById("file-input").click();
-  }
+  };
 
-  function onKeydown(evt) {
+  const onKeydown = (evt) => {
     if (evt.key === "Enter") {
       document.getElementById("file-input").click();
     }
-  }
+  };
 </script>
 
 <form
-  on:submit|preventDefault|stopPropagation={onSubmit}
   id="form"
   enctype="multipart/form-data"
+  on:submit|preventDefault|stopPropagation={onSubmit}
 >
   <h2>Upload files</h2>
   <p>
