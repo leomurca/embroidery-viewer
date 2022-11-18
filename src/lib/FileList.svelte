@@ -1,12 +1,14 @@
 <script>
+  export let title;
   export let files = [];
+  export let isError = false;
 </script>
 
 {#if files.length !== 0}
   <div id="selected-files-container">
-    <h2>Selected files:</h2>
+    <h2>{title}:</h2>
     {#each Array.from(files) as file}
-      <div id="selected-file-card">
+      <div id={isError ? "selected-file-card-error" : "selected-file-card"}>
         <p>{file.name} ({file.size / 1000} kb)</p>
       </div>
     {/each}
@@ -19,6 +21,14 @@
     width: 500px;
     padding-left: 15px;
     margin-top: 10px;
+  }
+
+  #selected-file-card-error {
+    border: 1px solid red;
+    width: 500px;
+    padding-left: 15px;
+    margin-top: 10px;
+    color: red;
   }
 
   @media only screen and (max-device-width: 812px) {

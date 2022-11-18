@@ -1,6 +1,6 @@
 <script>
   export let files;
-  export let acceptedFiles;
+  export let supportedFormats;
   export let onKeydown;
   export let onClick;
   export let onDrop;
@@ -23,7 +23,7 @@
     id="file-input"
     type="file"
     name="files[]"
-    accept={acceptedFiles.join(",")}
+    accept={supportedFormats.join(",")}
     multiple
     on:change={onChange}
     bind:files
