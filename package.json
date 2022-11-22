@@ -15,7 +15,6 @@
     "vite": "^3.2.3"
   },
   "dependencies": {
-    "jdataview": "^2.5.0",
     "svelte-seo": "^1.4.1"
   }
 }
