@@ -1,5 +1,5 @@
 <script>
-  import { startFileRead } from "../utils/main";
+  import renderFileToCanvas from "../file-renderer";
 
   export let files = [];
   let canvasRefs = [];
@@ -12,7 +12,7 @@
         <canvas bind:this={canvasRefs[i]} class="canvas" />
         <p>{file.name}</p>
       </div>
-      {canvasRefs[i] && startFileRead(file, canvasRefs[i])}
+      {canvasRefs[i] && renderFileToCanvas(file, canvasRefs[i])}
     {/each}
   </div>
 {/if}

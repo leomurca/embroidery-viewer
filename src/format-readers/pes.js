@@ -1,4 +1,4 @@
-import { Color, stitchTypes } from "./pattern";
+import { Color, stitchTypes } from "../file-renderer/pattern";
 
 const namedColors = [
   new Color(0, 0, 0, "Unknown"),

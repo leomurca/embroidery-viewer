@@ -1,6 +1,6 @@
-import { jDataView } from "../utils/jdataview";
-import { pesRead } from "../utils/pesformat";
-import { Pattern } from "../utils/pattern";
+import { jDataView } from "./jdataview";
+import { pesRead } from "../format-readers/pes";
+import { Pattern } from "./pattern";
 
 String.prototype.endsWith = function (suffix) {
   return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -49,7 +49,7 @@ function handleFileReadError(evt) {
   }
 }
 
-export function startFileRead(fileObject, canvas) {
+export default function renderFileToCanvas(fileObject, canvas) {
   const reader = new FileReader();
 
   reader.onloadend = function (x) {
