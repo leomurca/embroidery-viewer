@@ -3,18 +3,18 @@
   import Dropzone from "./Dropzone.svelte";
   import FileList from "./FileList.svelte";
 
-  import { filterFileRequirements } from "../utils/filterFileRequirements";
+  import { filterFiles } from "../utils/filterFiles";
 
   let acceptedFiles;
   let rejectedFiles;
-  let isAcceptedFilesRendered = false;
+  let areAcceptedFilesRendered = false;
   const fileRequirements = {
     supportedFormats: [".pes"],
     maxSize: 700000,
   };
 
   const onSubmit = () => {
-    isAcceptedFilesRendered = true;
+    areAcceptedFilesRendered = true;
   };
 
   const onDrop = (evt) => {
@@ -23,13 +23,13 @@
 
   const onChange = (evt) => {
     acceptedFiles = null;
-    isAcceptedFilesRendered = false;
+    areAcceptedFilesRendered = false;
 
     const changedFiles = evt.dataTransfer
       ? evt.dataTransfer.files
       : evt.target.files;
 
-    const results = filterFileRequirements(changedFiles, fileRequirements);
+    const results = filterFiles(changedFiles, fileRequirements);
     acceptedFiles = results.accepted;
     rejectedFiles = results.rejected;
   };
@@ -69,7 +69,7 @@
   <input type="submit" value="Render files" />
 </form>
 
-{#if isAcceptedFilesRendered}
+{#if areAcceptedFilesRendered}
   <CardList files={acceptedFiles} />
 {:else}
   <FileList title="Rejected Files" files={rejectedFiles} isError />

@@ -5,7 +5,7 @@ const areRequirementsFulfilled = (requirements, file) =>
   requirements.maxSize >= file.size &&
   requirements.supportedFormats.includes(formattedFilenameExt(file.name));
 
-export function filterFileRequirements(files, requirements) {
+export function filterFiles(files, requirements) {
   let accepted = [];
   let rejected = [];
   Array.from(files).forEach((file) => {
