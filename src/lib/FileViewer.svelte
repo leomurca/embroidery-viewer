@@ -9,7 +9,7 @@
   let rejectedFiles;
   let areAcceptedFilesRendered = false;
   const fileRequirements = {
-    supportedFormats: [".pes"],
+    supportedFormats: [".pes", ".dst"],
     maxSize: 700000,
   };
 
@@ -54,7 +54,7 @@
   <p>
     Max file size is <strong>{fileRequirements.maxSize / 1000}kb</strong>.
     Accepted formats:
-    <strong>{fileRequirements.supportedFormats.join(",")}</strong>.
+    <strong>{fileRequirements.supportedFormats.join(", ")}</strong>.
   </p>
 
   <Dropzone

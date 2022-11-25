@@ -1,5 +1,6 @@
 import { jDataView } from "./jdataview";
 import { pesRead } from "../format-readers/pes";
+import { dstRead } from "../format-readers/dst";
 import { Pattern } from "./pattern";
 
 String.prototype.endsWith = function (suffix) {
@@ -12,6 +13,8 @@ function displayFileText(filename, evt, canvas) {
   filename = filename.toLowerCase();
   if (filename.endsWith("pes")) {
     pesRead(view, pattern);
+  } else if (filename.endsWith("dst")) {
+    dstRead(view, pattern);
   }
   pattern.moveToPositive();
   pattern.drawShape(canvas);
