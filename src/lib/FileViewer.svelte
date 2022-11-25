@@ -9,7 +9,7 @@
   let rejectedFiles;
   let areAcceptedFilesRendered = false;
   const fileRequirements = {
-    supportedFormats: [".pes"],
+    supportedFormats: [".pes", ".dst"],
     maxSize: 700000,
   };
 
