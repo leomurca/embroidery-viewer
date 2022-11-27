@@ -1,0 +1,28 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+
+    runs-on: ubuntu-latest
+
+    env:
+      SSH_KEY: ${{secrets.SSH_KEY}}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js 16
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'npm'
+    - run: npm install
+    - run: npm run build
+    - run: mkdir ~/.ssh
+    - run: echo "$SSH_KEY" >> ~/.ssh/id_ed25519_embroideryviewer
+    - run: chmod 400 ~/.ssh/id_ed25519_embroideryviewer
+    - run: echo -e "Host embroideryviewer\n\tUser embroideryviewer\n\tHostname 45.76.5.44\n\tIdentityFile ~/.ssh/id_ed25519_embroideryviewer\n\tStrictHostKeyChecking No" >> ~/.ssh/config
+    - run: rsync -avz --progress dist/ embroideryviewer:embroideryviewer/web/prod
