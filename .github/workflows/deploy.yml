@@ -24,4 +24,4 @@ jobs:
       - run: echo "$SSH_KEY" >> ~/.ssh/id_rsa_embroideryviewer
       - run: chmod 400 ~/.ssh/id_rsa_embroideryviewer
       - run: echo -e "Host embroideryviewer\n\tUser embroideryviewer\n\tHostname 45.76.5.44\n\tIdentityFile ~/.ssh/id_rsa_embroideryviewer\n\tStrictHostKeyChecking No" >> ~/.ssh/config
-      - run: rsync -avz --progress dist/ embroideryviewer:embroideryviewer/web/prod
+      - run: rsync -avz --progress dist/ embroideryviewer:web/prod
