@@ -1,11 +1,10 @@
 # Embroidery Viewer
 
-A free online tool to view embroidery files. 
+A free online tool to view embroidery files.
 Available at https://embroideryviewer.xyz.
 
 ![Demo](/demo.gif)
 
-Current supported formats: **.pes**.
-
+Current supported formats: **.pes, .dst and .pec**.
 
 Inspired by https://github.com/redteam316/html5-embroidery.git.
