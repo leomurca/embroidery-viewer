@@ -2,6 +2,7 @@ import { jDataView } from "./jdataview";
 import { pesRead } from "../format-readers/pes";
 import { dstRead } from "../format-readers/dst";
 import { Pattern } from "./pattern";
+import { pecRead } from "../format-readers/pec";
 
 String.prototype.endsWith = function (suffix) {
   return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -15,6 +16,8 @@ function displayFileText(filename, evt, canvas) {
     pesRead(view, pattern);
   } else if (filename.endsWith("dst")) {
     dstRead(view, pattern);
+  } else if (filename.endsWith("pec")) {
+    pecRead(view, pattern);
   }
   pattern.moveToPositive();
   pattern.drawShape(canvas);
