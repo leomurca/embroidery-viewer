@@ -5,6 +5,6 @@ Available at https://embroideryviewer.xyz.
 
 ![Demo](/demo.gif)
 
-Current supported formats: **.pes, .dst and .pec**.
+Current supported formats: **.pes, .dst, .pec and .jef**.
 
 Inspired by https://github.com/redteam316/html5-embroidery.git.
