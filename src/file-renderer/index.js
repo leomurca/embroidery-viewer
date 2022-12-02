@@ -4,6 +4,7 @@ import { dstRead } from "../format-readers/dst";
 import { Pattern } from "./pattern";
 import { pecRead } from "../format-readers/pec";
 import { jefRead } from "../format-readers/jef";
+import { expRead } from "../format-readers/exp";
 
 String.prototype.endsWith = function (suffix) {
   return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -21,6 +22,8 @@ function displayFileText(filename, evt, canvas) {
     pecRead(view, pattern);
   } else if (filename.endsWith("jef")) {
     jefRead(view, pattern);
+  } else if (filename.endsWith("exp")) {
+    expRead(view, pattern);
   }
   pattern.moveToPositive();
   pattern.drawShape(canvas);
