@@ -32,7 +32,8 @@
   }
 
   @media only screen and (max-device-width: 812px) {
-    #selected-files-container {
+    #selected-files-container,
+    #selected-file-card-error {
       width: 100%;
     }
 
