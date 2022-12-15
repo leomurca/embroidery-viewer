@@ -10,9 +10,10 @@ String.prototype.endsWith = function (suffix) {
   return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
-function displayFileText(filename, evt, canvas) {
+function renderToCanvas(filename, evt, canvas) {
   const view = jDataView(evt.target.result, 0, evt.size);
   const pattern = new Pattern();
+
   filename = filename.toLowerCase();
   if (filename.endsWith("pes")) {
     pesRead(view, pattern);
@@ -29,15 +30,16 @@ function displayFileText(filename, evt, canvas) {
   pattern.drawShape(canvas);
 }
 
-function handleFileReadAbort(evt) {
-  alert("File read aborted.");
+function renderAbortMessage(errorMessageRef) {
+  errorMessageRef.innerHTML = "Render aborted!";
 }
 
-function handleFileReadError(evt) {
+function renderErrorMessage(errorName, errorMessageRef) {
   let message;
-  switch (evt.target.error.name) {
+  switch (errorName) {
     case "NotFoundError":
-      alert("The file could not be found at the time the read was processed.");
+      message =
+        "The file could not be found at the time the read was processed.";
       break;
     case "SecurityError":
       message = "<p>A file security error occured. This can be due to:</p>";
@@ -46,29 +48,33 @@ function handleFileReadError(evt) {
       message += "<li>Performing too many read calls on file resources.</li>";
       message +=
         "<li>The file has changed on disk since the user selected it.</li></ul>";
-      alert(message);
       break;
     case "NotReadableError":
-      alert(
-        "The file cannot be read. This can occur if the file is open in another application."
-      );
+      message =
+        "The file cannot be read. This can occur if the file is open in another application.";
       break;
     case "EncodingError":
-      alert("The length of the data URL for the file is too long.");
+      message = "The length of the data URL for the file is too long.";
       break;
     default:
-      alert("File error code " + evt.target.error.name);
+      message = "Something wrong happened!";
+      break;
   }
+
+  errorMessageRef.innerHTML = message;
 }
 
-export default function renderFileToCanvas(fileObject, canvas) {
+export default function renderFileToCanvas(
+  fileObject,
+  canvas,
+  errorMessageRef
+) {
   const reader = new FileReader();
 
-  reader.onloadend = function (x) {
-    displayFileText.apply(null, [fileObject.name, x, canvas]);
-  };
-  reader.abort = handleFileReadAbort;
-  reader.onerror = handleFileReadError;
+  reader.onloadend = (evt) => renderToCanvas(fileObject.name, evt, canvas);
+  reader.abort = (/** @type {any} */ _) => renderAbortMessage(errorMessageRef);
+  reader.onerror = (evt) =>
+    renderErrorMessage(evt.target.error.name, errorMessageRef);
 
   if (fileObject) {
     reader.readAsArrayBuffer(fileObject);

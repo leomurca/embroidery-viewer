@@ -3,6 +3,7 @@
 
   export let files = [];
   let canvasRefs = [];
+  let errorMessageRef;
 </script>
 
 {#if files.length !== 0}
@@ -12,8 +13,11 @@
         <canvas bind:this={canvasRefs[i]} class="canvas" />
         <p>{file.name}</p>
       </div>
-      {canvasRefs[i] && renderFileToCanvas(file, canvasRefs[i])}
+      {canvasRefs[i] &&
+        renderFileToCanvas(file, canvasRefs[i], errorMessageRef)}
     {/each}
+    <!-- svelte-ignore a11y-missing-content -->
+    <h1 bind:this={errorMessageRef} />
   </div>
 {/if}
 
