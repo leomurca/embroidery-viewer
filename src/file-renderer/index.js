@@ -1,31 +1,14 @@
 import { jDataView } from "./jdataview";
-import { pesRead } from "../format-readers/pes";
-import { dstRead } from "../format-readers/dst";
+import { supportedFormats } from "../format-readers";
 import { Pattern } from "./pattern";
-import { pecRead } from "../format-readers/pec";
-import { jefRead } from "../format-readers/jef";
-import { expRead } from "../format-readers/exp";
-
-String.prototype.endsWith = function (suffix) {
-  return this.indexOf(suffix, this.length - suffix.length) !== -1;
-};
 
 function renderToCanvas(filename, evt, canvas) {
+  const fileExtension = filename.toLowerCase().split(".").pop();
   const view = jDataView(evt.target.result, 0, evt.size);
   const pattern = new Pattern();
 
-  filename = filename.toLowerCase();
-  if (filename.endsWith("pes")) {
-    pesRead(view, pattern);
-  } else if (filename.endsWith("dst")) {
-    dstRead(view, pattern);
-  } else if (filename.endsWith("pec")) {
-    pecRead(view, pattern);
-  } else if (filename.endsWith("jef")) {
-    jefRead(view, pattern);
-  } else if (filename.endsWith("exp")) {
-    expRead(view, pattern);
-  }
+  supportedFormats[fileExtension].read(view, pattern);
+
   pattern.moveToPositive();
   pattern.drawShape(canvas);
 }

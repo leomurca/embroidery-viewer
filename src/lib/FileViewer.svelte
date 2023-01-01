@@ -4,12 +4,13 @@
   import FileList from "./FileList.svelte";
 
   import { filterFiles } from "../utils/filterFiles";
+  import { supportedFormats } from "../format-readers";
 
   let acceptedFiles;
   let rejectedFiles;
   let areAcceptedFilesRendered = false;
   const fileRequirements = {
-    supportedFormats: [".pes", ".dst", ".pec", ".jef", ".exp"],
+    supportedFormats: Object.values(supportedFormats).map((f) => f.ext),
     maxSize: 700000,
   };
 
