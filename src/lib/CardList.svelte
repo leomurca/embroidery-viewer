@@ -5,6 +5,7 @@
   let canvasRefs = [];
   let colorRefs = [];
   let stitchesRefs = [];
+  let sizeRefs = [];
   let errorMessageRef;
 </script>
 
@@ -13,8 +14,9 @@
     {#each Array.from(files) as file, i}
       <div class="canvas-container">
         <canvas bind:this={canvasRefs[i]} class="canvas" />
-        <p>{file.name}</p>
+        <p><strong>{file.name}</strong></p>
         <div class="stitches-container" bind:this={stitchesRefs[i]} />
+        <div class="size-container" bind:this={sizeRefs[i]} />
         <div class="colors-container" bind:this={colorRefs[i]} />
       </div>
       {canvasRefs[i] &&
@@ -23,7 +25,8 @@
           canvasRefs[i],
           errorMessageRef,
           colorRefs[i],
-          stitchesRefs[i]
+          stitchesRefs[i],
+          sizeRefs[i]
         )}
     {/each}
     <!-- svelte-ignore a11y-missing-content -->
