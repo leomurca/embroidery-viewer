@@ -2,7 +2,7 @@ import { jDataView } from "./jdataview";
 import { supportedFormats } from "../format-readers";
 import { Pattern } from "./pattern";
 
-function renderToCanvas(filename, evt, canvas, colorView) {
+function renderFile(filename, evt, canvas, colorView) {
   const fileExtension = filename.toLowerCase().split(".").pop();
   const view = jDataView(evt.target.result, 0, evt.size);
   const pattern = new Pattern();
@@ -57,7 +57,7 @@ export default function renderFileToCanvas(
   const reader = new FileReader();
 
   reader.onloadend = (evt) =>
-    renderToCanvas(fileObject.name, evt, canvas, colorView);
+    renderFile(fileObject.name, evt, canvas, colorView);
   reader.abort = (/** @type {any} */ _) => renderAbortMessage(errorMessageRef);
   reader.onerror = (evt) =>
     renderErrorMessage(evt.target.error.name, errorMessageRef);
