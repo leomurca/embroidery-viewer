@@ -4,6 +4,7 @@
   export let files = [];
   let canvasRefs = [];
   let colorRefs = [];
+  let stitchesRefs = [];
   let errorMessageRef;
 </script>
 
@@ -13,10 +14,17 @@
       <div class="canvas-container">
         <canvas bind:this={canvasRefs[i]} class="canvas" />
         <p>{file.name}</p>
+        <div class="stitches-container" bind:this={stitchesRefs[i]} />
         <div class="colors-container" bind:this={colorRefs[i]} />
       </div>
       {canvasRefs[i] &&
-        renderFileToCanvas(file, canvasRefs[i], errorMessageRef, colorRefs[i])}
+        renderFileToCanvas(
+          file,
+          canvasRefs[i],
+          errorMessageRef,
+          colorRefs[i],
+          stitchesRefs[i]
+        )}
     {/each}
     <!-- svelte-ignore a11y-missing-content -->
     <h1 bind:this={errorMessageRef} />
@@ -38,8 +46,7 @@
     justify-content: center;
     align-items: center;
     width: 550px;
-    /* Maybe use height: auto; */
-    height: 550px;
+    max-height: 1000px;
     margin-bottom: 15px;
     padding: 10px;
     border: 2px solid black;
@@ -53,9 +60,14 @@
 
   .colors-container {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 5px;
     row-gap: 5px;
+  }
+
+  .stitches-container {
+    padding: 10px 0;
   }
 
   @media only screen and (max-device-width: 812px) {

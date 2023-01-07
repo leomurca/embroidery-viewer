@@ -2,7 +2,7 @@ import { jDataView } from "./jdataview";
 import { supportedFormats } from "../format-readers";
 import { Pattern } from "./pattern";
 
-function renderFile(filename, evt, canvas, colorView) {
+function renderFile(filename, evt, canvas, colorView, stitchesView) {
   const fileExtension = filename.toLowerCase().split(".").pop();
   const view = jDataView(evt.target.result, 0, evt.size);
   const pattern = new Pattern();
@@ -12,6 +12,7 @@ function renderFile(filename, evt, canvas, colorView) {
   pattern.moveToPositive();
   pattern.drawShapeTo(canvas);
   pattern.drawColorsTo(colorView);
+  pattern.drawStitchesCountTo(stitchesView);
 }
 
 function renderAbortMessage(errorMessageRef) {
@@ -52,12 +53,13 @@ export default function renderFileToCanvas(
   fileObject,
   canvas,
   errorMessageRef,
-  colorView
+  colorView,
+  stitchesView
 ) {
   const reader = new FileReader();
 
   reader.onloadend = (evt) =>
-    renderFile(fileObject.name, evt, canvas, colorView);
+    renderFile(fileObject.name, evt, canvas, colorView, stitchesView);
   reader.abort = (/** @type {any} */ _) => renderAbortMessage(errorMessageRef);
   reader.onerror = (evt) =>
     renderErrorMessage(evt.target.error.name, errorMessageRef);
