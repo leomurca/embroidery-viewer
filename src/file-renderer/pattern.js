@@ -180,4 +180,14 @@ Pattern.prototype.drawColorsTo = function (colorContainer) {
   });
 };
 
+Pattern.prototype.drawStitchesCountTo = function (stitchesContainer) {
+  stitchesContainer.innerHTML += `<div><strong>Stitches:</strong> ${this.stitches.length} </div>`;
+};
+
+Pattern.prototype.drawSizeValuesTo = function (sizeContainer) {
+  sizeContainer.innerHTML += `<div><strong>Size (x, y):</strong> ${Math.round(
+    this.right / 10
+  )}mm x ${Math.round(this.bottom / 10)}mm </div>`;
+};
+
 export { Pattern, Color, stitchTypes };
