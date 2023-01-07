@@ -146,7 +146,7 @@ Pattern.prototype.fixColorCount = function () {
   this.colors.splice(maxColorIndex + 1, this.colors.length - maxColorIndex - 1);
 };
 
-Pattern.prototype.drawShape = function (canvas) {
+Pattern.prototype.drawShapeTo = function (canvas) {
   canvas.width = this.right;
   canvas.height = this.bottom;
   if (canvas.getContext) {
@@ -172,6 +172,12 @@ Pattern.prototype.drawShape = function (canvas) {
     }
     ctx.stroke();
   }
+};
+
+Pattern.prototype.drawColorsTo = function (colorContainer) {
+  this.colors.forEach((color) => {
+    colorContainer.innerHTML += `<div style='background-color: rgb(${color.r}, ${color.g}, ${color.b}); height: 25px; width: 25px; border: 1px solid #000000;'></div>`;
+  });
 };
 
 export { Pattern, Color, stitchTypes };

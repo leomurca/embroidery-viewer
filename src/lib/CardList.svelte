@@ -3,6 +3,7 @@
 
   export let files = [];
   let canvasRefs = [];
+  let colorRefs = [];
   let errorMessageRef;
 </script>
 
@@ -12,9 +13,10 @@
       <div class="canvas-container">
         <canvas bind:this={canvasRefs[i]} class="canvas" />
         <p>{file.name}</p>
+        <div class="colors-container" bind:this={colorRefs[i]} />
       </div>
       {canvasRefs[i] &&
-        renderFileToCanvas(file, canvasRefs[i], errorMessageRef)}
+        renderFileToCanvas(file, canvasRefs[i], errorMessageRef, colorRefs[i])}
     {/each}
     <!-- svelte-ignore a11y-missing-content -->
     <h1 bind:this={errorMessageRef} />
@@ -36,6 +38,7 @@
     justify-content: center;
     align-items: center;
     width: 550px;
+    /* Maybe use height: auto; */
     height: 550px;
     margin-bottom: 15px;
     padding: 10px;
@@ -48,10 +51,17 @@
     object-fit: contain;
   }
 
+  .colors-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    row-gap: 5px;
+  }
+
   @media only screen and (max-device-width: 812px) {
     .canvas-container {
       width: 100%;
-      height: 400px;
+      height: auto;
     }
 
     #container {
