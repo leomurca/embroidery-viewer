@@ -1,3 +1,6 @@
+import { rgbToHex } from "../utils/rgbToHex";
+import { shadeColor } from "../utils/shadeColor";
+
 function Stitch(x, y, flags, color) {
   this.flags = flags;
   this.x = x;
@@ -149,28 +152,57 @@ Pattern.prototype.fixColorCount = function () {
 Pattern.prototype.drawShapeTo = function (canvas) {
   canvas.width = this.right;
   canvas.height = this.bottom;
+
+  let gradient, tx, ty;
+  let lastStitch = this.stitches[0];
+  let gWidth = 100;
   if (canvas.getContext) {
     const ctx = canvas.getContext("2d");
+    ctx.lineWidth = 3;
+    ctx.lineJoin = "round";
+
     let color = this.colors[this.stitches[0].color];
-    ctx.beginPath();
-    ctx.strokeStyle = "rgb(" + color.r + "," + color.g + "," + color.b + ")";
     for (let i = 0; i < this.stitches.length; i++) {
       const currentStitch = this.stitches[i];
+      if (i > 0) lastStitch = this.stitches[i - 1];
+      tx = currentStitch.x - lastStitch.x;
+      ty = currentStitch.y - lastStitch.y;
+
+      gWidth = Math.sqrt(tx * tx + ty * ty);
+      gradient = ctx.createRadialGradient(
+        currentStitch.x - tx,
+        currentStitch.y - ty,
+        0,
+        currentStitch.x - tx,
+        currentStitch.y - ty,
+        gWidth * 1.4
+      );
+
+      gradient.addColorStop("0", shadeColor(rgbToHex(color), -60));
+      gradient.addColorStop("0.05", rgbToHex(color));
+      gradient.addColorStop("0.5", shadeColor(rgbToHex(color), 60));
+      gradient.addColorStop("0.9", rgbToHex(color));
+      gradient.addColorStop("1.0", shadeColor(rgbToHex(color), -60));
+
+      ctx.strokeStyle = gradient;
       if (
         currentStitch.flags === stitchTypes.jump ||
         currentStitch.flags === stitchTypes.trim ||
         currentStitch.flags === stitchTypes.stop
       ) {
-        ctx.stroke();
         color = this.colors[currentStitch.color];
         ctx.beginPath();
         ctx.strokeStyle =
-          "rgb(" + color.r + "," + color.g + "," + color.b + ")";
+          "rgba(" + color.r + "," + color.g + "," + color.b + ",0)";
         ctx.moveTo(currentStitch.x, currentStitch.y);
+        ctx.stroke();
       }
+      ctx.beginPath();
+      ctx.moveTo(lastStitch.x, lastStitch.y);
       ctx.lineTo(currentStitch.x, currentStitch.y);
+      ctx.stroke();
+      lastStitch = currentStitch;
     }
-    ctx.stroke();
   }
 };
 
