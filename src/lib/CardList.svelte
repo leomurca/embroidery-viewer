@@ -7,6 +7,23 @@
   let stitchesRefs = [];
   let sizeRefs = [];
   let errorMessageRef;
+
+  const downloadCanvasAsImage = (canvas, filename) => {
+    const image = canvas
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream");
+
+    const link = document.createElement("a");
+    link.download = `${filename.split(".").slice(0, -1).join(".")}.png`;
+    link.href = image;
+    link.click();
+  };
+
+  const onKeydown = (evt) => {
+    if (evt.key === "Enter") {
+      document.getElementById("download-button").click();
+    }
+  };
 </script>
 
 {#if files.length !== 0}
@@ -18,6 +35,14 @@
         <div class="stitches-container" bind:this={stitchesRefs[i]} />
         <div class="size-container" bind:this={sizeRefs[i]} />
         <div class="colors-container" bind:this={colorRefs[i]} />
+        <div
+          id="download-button"
+          role="button"
+          on:keydown={onKeydown}
+          on:click={() => downloadCanvasAsImage(canvasRefs[i], file.name)}
+        >
+          Download
+        </div>
       </div>
       {canvasRefs[i] &&
         renderFileToCanvas(
@@ -56,7 +81,7 @@
   }
 
   .canvas {
-    height: 80%;
+    height: 70%;
     width: 100%;
     object-fit: contain;
   }
@@ -67,10 +92,25 @@
     flex-wrap: wrap;
     gap: 5px;
     row-gap: 5px;
+    padding-bottom: 15px;
   }
 
   .stitches-container {
     padding: 10px 0;
+  }
+
+  div[role="button"] {
+    background-color: #05345f;
+    font-weight: 500;
+    color: white;
+    padding: 10px;
+    border-radius: 0;
+  }
+
+  div[role="button"]:hover {
+    cursor: pointer;
+    background-color: black;
+    color: white;
   }
 
   @media only screen and (max-device-width: 812px) {
