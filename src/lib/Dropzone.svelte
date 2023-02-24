@@ -34,7 +34,7 @@
   #dropzone {
     display: flex;
     height: 100px;
-    width: 500px;
+    width: 100%;
     border: 5px dotted black;
     padding: 15px;
     z-index: 10;
