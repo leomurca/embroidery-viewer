@@ -4,10 +4,9 @@
 
 <footer>
   <p>
-    Copyright © 2022 <a
-      href="https://leomurca.xyz"
-      target="_blank"
-      rel="noreferrer">Leonardo Murça</a
+    Copyright © {new Date().getFullYear()}
+    <a href="https://leomurca.xyz" target="_blank" rel="noreferrer"
+      >Leonardo Murça</a
     >.
   </p>
   <p>
