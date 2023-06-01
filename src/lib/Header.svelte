@@ -26,6 +26,9 @@
 </header>
 
 <style>
+  header {
+    margin-top: 100px;
+  }
   .logo {
     background-image: logo;
   }
