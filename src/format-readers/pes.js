@@ -69,69 +69,82 @@ const namedColors = [
 ];
 
 function readPecStitches(file, pattern) {
-  let stitchNumber = 0,
-    stitchType,
-    val1,
-    val2,
-    byteCount = file.byteLength;
-  while (file.tell() < byteCount) {
-    val1 = file.getUint8();
-    val2 = file.getUint8();
+  let stitchNumber = 0;
+  const byteCount = file.byteLength;
 
-    stitchType = stitchTypes.normal;
-    if (val1 === 0xff && val2 === 0x00) {
+  while (file.tell() < byteCount) {
+    let [xOffset, yOffset] = [file.getUint8(), file.getUint8()];
+    let stitchType = stitchTypes.normal;
+
+    if (isEndStitch(xOffset, yOffset)) {
       pattern.addStitchRel(0, 0, stitchTypes.end, true);
       break;
     }
-    if (val1 === 0xfe && val2 === 0xb0) {
-      file.getInt8();
+
+    if (isStopStitch(xOffset, yOffset)) {
+      file.getInt8();  // Skip extra byte
       pattern.addStitchRel(0, 0, stitchTypes.stop, true);
-      stitchNumber += 1;
-    } else {
-      if (val1 & 0x80) {
-        if (val1 & 0x20) {
-          stitchType = stitchTypes.trim;
-        }
-        if (val1 & 0x10) {
-          stitchType = stitchTypes.jump;
-        }
-        val1 = ((val1 & 0x0f) << 8) + val2;
-        if (val1 & 0x800) {
-          val1 -= 0x1000;
-        }
-        val2 = file.getUint8();
-      } else if (val1 >= 0x40) {
-        val1 -= 0x80;
-      }
-      if (val2 & 0x80) {
-        if (val2 & 0x20) {
-          stitchType = stitchTypes.trim;
-        }
-        if (val2 & 0x10) {
-          stitchType = stitchTypes.jump;
-        }
-        val2 = ((val2 & 0x0f) << 8) + file.getUint8();
-        if (val2 & 0x800) {
-          val2 -= 0x1000;
-        }
-      } else if (val2 > 0x3f) {
-        val2 -= 0x80;
-      }
-      pattern.addStitchRel(val1, val2, stitchType, true);
-      stitchNumber += 1;
+      stitchNumber++;
+      continue;
     }
+
+    stitchType = determineStitchType(xOffset, yOffset);
+    [xOffset, yOffset] = decodeCoordinates(xOffset, yOffset, file);
+    
+    pattern.addStitchRel(xOffset, yOffset, stitchType, true);
+    stitchNumber++;
   }
 }
 
+function isEndStitch(xOffset, yOffset) {
+  return xOffset === 0xff && yOffset === 0x00;
+}
+
+function isStopStitch(xOffset, yOffset) {
+  return xOffset === 0xfe && yOffset === 0xb0;
+}
+
+function determineStitchType(xOffset, yOffset) {
+  if (xOffset & 0x80) {
+    if (xOffset & 0x20) return stitchTypes.trim;
+    if (xOffset & 0x10) return stitchTypes.jump;
+  }
+  if (yOffset & 0x80) {
+    if (yOffset & 0x20) return stitchTypes.trim;
+    if (yOffset & 0x10) return stitchTypes.jump;
+  }
+  return stitchTypes.normal;
+}
+
+function decodeCoordinates(xOffset, yOffset, file) {
+  if (xOffset & 0x80) {
+    xOffset = ((xOffset & 0x0f) << 8) + yOffset;
+    if (xOffset & 0x800) xOffset -= 0x1000;
+    yOffset = file.getUint8();
+  } else if (xOffset >= 0x40) {
+    xOffset -= 0x80;
+  }
+
+  if (yOffset & 0x80) {
+    yOffset = ((yOffset & 0x0f) << 8) + file.getUint8();
+    if (yOffset & 0x800) yOffset -= 0x1000;
+  } else if (yOffset > 0x3f) {
+    yOffset -= 0x80;
+  }
+
+  return [xOffset, yOffset];
+}
+
 export function pesRead(file, pattern) {
-  let x, numColors, pecstart;
-  pecstart = file.getInt32(8, true);
-  file.seek(pecstart + 48);
-  numColors = file.getInt8() + 1;
-  for (x = 0; x < numColors; x += 1) {
+  const pecStart = file.getInt32(8, true);
+  file.seek(pecStart + 48);
+  
+  const numColors = file.getInt8() + 1;
+  for (let i = 0; i < numColors; i++) {
     pattern.addColor(namedColors[file.getInt8()]);
   }
-  file.seek(pecstart + 532);
+
+  file.seek(pecStart + 532);
   readPecStitches(file, pattern);
   pattern.addStitchRel(0, 0, stitchTypes.end);
 }
